@@ -153,10 +153,10 @@ namespace Calamari.Integration.Processes
                         process.BeginErrorReadLine();
 
                         // Some processes can have race conditions. Between the call to Start and WaitForExit part of the process may have exited already.
-                        // This can happen when callign CommitChanges in dotnet's ServerManager as shown here: https://stackoverflow.com/questions/7446632/servermanager-commitchanges-makes-changes-with-a-slight-delay
+                        // This can happen when calling CommitChanges in dotnet's ServerManager as shown here: https://stackoverflow.com/questions/7446632/servermanager-commitchanges-makes-changes-with-a-slight-delay
                         // Commit changes is called by appcmd from IIS, which is called by Set-ItemProperty from the WebAdministration module in Powershell
                         // https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.process.waitforexit?view=netframework-4.8#System_Diagnostics_Process_WaitForExit_System_Int32_
-                        // Add a timeout passed down from some default configuration or context up the call stack, 0 will never timeout.
+                        // Add a timeout passed down from some default configuration or context up the call stack, -1 will never timeout.
                         var timedOut = !process.WaitForExit(timeoutMilliseconds);
 
                         if (!timedOut)
